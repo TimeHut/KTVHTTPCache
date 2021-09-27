@@ -136,6 +136,29 @@
     return cacheItems;
 }
 
+- (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path
+{
+    NSString *filePath = [KTVHCPathTool completeFilePathWithURL:URL];
+    NSError *error;
+    [[NSFileManager defaultManager] copyItemAtPath:path toPath:filePath error:&error];
+    if (error){
+        KTVHCLogDataFileSource(@"Copy to target path error:%@",error.localizedDescription);
+        return;
+    }else{
+        KTVHCLogDataFileSource(@"Copy to target path success");
+    }
+    long long length = [KTVHCPathTool sizeAtPath:path];
+    KTVHCDataUnitPool *pool = [KTVHCDataUnitPool pool];
+    KTVHCDataUnit *unit = [self unitWithURL:URL];
+    [unit updateResponseHeaders:@{@"Accept-Ranges":@"bytes",
+                                  @"Content-Type":@"video/mp4",
+                                  @"Server":@"Tengine"
+    } totalLength:length];
+    KTVHCDataUnitItem *unitItem = [[KTVHCDataUnitItem alloc] initWithPath:filePath offset:0];
+    [unit insertUnitItem:unitItem];
+    [pool.unitQueue archive];
+}
+
 - (void)deleteUnitWithURL:(NSURL *)URL
 {
     if (URL.absoluteString.length <= 0) {

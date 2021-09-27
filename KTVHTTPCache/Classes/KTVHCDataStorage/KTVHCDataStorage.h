@@ -42,6 +42,14 @@
 - (NSArray<KTVHCDataCacheItem *> *)allCacheItems;
 
 /**
+ *  Create the cache item for the URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @param path : The video path.
+ */
+- (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path;
+
+/**
  *  Get cache length.
  */
 @property (nonatomic) long long maxCacheLength;     // Default is 500M.

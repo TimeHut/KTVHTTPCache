@@ -69,6 +69,11 @@
     return [[KTVHCDataUnitPool pool] allCacheItem];
 }
 
+- (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path
+{
+    [[KTVHCDataUnitPool pool] cacheVideoWithURL:URL videoPath:path];
+}
+
 - (long long)totalCacheLength
 {
     return [[KTVHCDataUnitPool pool] totalCacheLength];

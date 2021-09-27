@@ -137,6 +137,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (KTVHCDataCacheItem *)cacheCacheItemWithURL:(NSURL *)URL;
 
 /**
+ *  Create the cache item for the URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @param path :  Video path.
+ */
++ (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path;
+
+/**
  *  Get all cache items.
  *
  *  @return All cache items.
