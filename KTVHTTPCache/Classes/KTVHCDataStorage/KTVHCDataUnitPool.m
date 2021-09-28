@@ -154,6 +154,7 @@
                                   @"Content-Type":@"video/mp4",
                                   @"Server":@"Tengine"
     } totalLength:length];
+    [unit workingRelease];
     KTVHCDataUnitItem *unitItem = [[KTVHCDataUnitItem alloc] initWithPath:filePath offset:0];
     [unit insertUnitItem:unitItem];
     [pool.unitQueue archive];
