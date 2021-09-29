@@ -25,6 +25,7 @@
 - (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL;
 
 - (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path;
+- (BOOL)hasCacheWithURL:(NSURL *)URL;
 
 - (void)deleteUnitWithURL:(NSURL *)URL;
 - (void)deleteUnitsWithLength:(long long)length;

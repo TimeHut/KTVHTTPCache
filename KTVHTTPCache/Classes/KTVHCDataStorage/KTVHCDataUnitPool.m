@@ -160,6 +160,19 @@
     [pool.unitQueue archive];
 }
 
+- (BOOL)hasCacheWithURL:(NSURL *)URL
+{
+    NSString *key = [[KTVHCURLTool tool] keyWithURL:URL];
+    KTVHCDataUnit *unit = [self.unitQueue unitWithKey:key];
+    if (!unit) return NO;
+    return unit.totalLength == unit.cacheLength;
+    
+    /* 备用
+    NSString *filePath = [KTVHCPathTool completeFilePathWithURL:URL];
+    return [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+     */
+}
+
 - (void)deleteUnitWithURL:(NSURL *)URL
 {
     if (URL.absoluteString.length <= 0) {

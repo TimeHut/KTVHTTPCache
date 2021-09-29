@@ -89,4 +89,9 @@
     [[KTVHCDataUnitPool pool] deleteAllUnits];
 }
 
+- (BOOL)hasCacheWithURL:(NSURL *)URL
+{
+    return [[KTVHCDataUnitPool pool] hasCacheWithURL:URL];
+}
+
 @end

@@ -50,6 +50,13 @@
 - (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path;
 
 /**
+ *  Has cache for URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ */
+- (BOOL)hasCacheWithURL:(NSURL *)URL;
+
+/**
  *  Get cache length.
  */
 @property (nonatomic) long long maxCacheLength;     // Default is 500M.

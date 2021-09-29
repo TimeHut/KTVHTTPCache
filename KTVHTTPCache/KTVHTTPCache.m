@@ -79,6 +79,11 @@
     [[KTVHCDataStorage storage] cacheVideoWithURL:URL videoPath:path];
 }
 
++ (BOOL)hasCacheWithURL:(NSURL *)URL
+{
+    return [[KTVHCDataStorage storage] hasCacheWithURL:URL];
+}
+
 + (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems
 {
     return [[KTVHCDataStorage storage] allCacheItems];
