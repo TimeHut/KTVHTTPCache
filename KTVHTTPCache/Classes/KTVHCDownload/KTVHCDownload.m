@@ -15,11 +15,12 @@
 
 #import <UIKit/UIKit.h>
 
-NSString * const KTVHCContentTypeVideo                  = @"video/";
-NSString * const KTVHCContentTypeAudio                  = @"audio/";
-NSString * const KTVHCContentTypeApplicationMPEG4       = @"application/mp4";
-NSString * const KTVHCContentTypeApplicationOctetStream = @"application/octet-stream";
-NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream";
+NSString * const KTVHCContentTypeVideo                      = @"video/";
+NSString * const KTVHCContentTypeAudio                      = @"audio/";
+NSString * const KTVHCContentTypeApplicationMPEG4           = @"application/mp4";
+NSString * const KTVHCContentTypeApplicationOctetStream     = @"application/octet-stream";
+NSString * const KTVHCContentTypeBinaryOctetStream          = @"binary/octet-stream";
+NSString * const KTVHCContentTypeApplicationFormUrlencoded  = @"application/x-www-form-urlencoded";
 
 @interface KTVHCDownload () <NSURLSessionDataDelegate, NSLocking>
 
@@ -67,7 +68,8 @@ NSString * const KTVHCContentTypeBinaryOctetStream      = @"binary/octet-stream"
                                         KTVHCContentTypeAudio,
                                         KTVHCContentTypeApplicationMPEG4,
                                         KTVHCContentTypeApplicationOctetStream,
-                                        KTVHCContentTypeBinaryOctetStream];
+                                        KTVHCContentTypeBinaryOctetStream,
+                                        KTVHCContentTypeApplicationFormUrlencoded];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationDidEnterBackground:)
                                                      name:UIApplicationDidEnterBackgroundNotification
