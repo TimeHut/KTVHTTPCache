@@ -158,13 +158,19 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
  */
 + (void)cacheDeleteCacheWithURL:(NSURL *)URL;
 
-
 /**
  *  Has cache for URL.
  *
  *  @param URL : The URL for HTTP content.
  */
 + (BOOL)hasCacheWithURL:(NSURL *)URL;
+
+/**
+ *  Has available data
+ *
+ *  @param URL : The URL for HTTP content.
+ */
++ (BOOL)hasAvailableDataForURL:(NSURL *)URL;
 
 /**
  *  Delete all caches.

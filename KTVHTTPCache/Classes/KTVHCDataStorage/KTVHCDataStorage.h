@@ -57,6 +57,13 @@
 - (BOOL)hasCacheWithURL:(NSURL *)URL;
 
 /**
+ *  Has available data
+ *
+ *  @param URL : The URL for HTTP content.
+ */
+- (BOOL)hasAvailableDataForURL:(NSURL *)URL;
+
+/**
  *  Get cache length.
  */
 @property (nonatomic) long long maxCacheLength;     // Default is 500M.

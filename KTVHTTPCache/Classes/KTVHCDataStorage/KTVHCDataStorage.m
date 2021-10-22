@@ -94,4 +94,9 @@
     return [[KTVHCDataUnitPool pool] hasCacheWithURL:URL];
 }
 
+- (BOOL)hasAvailableDataForURL:(NSURL *)URL
+{
+    return [[KTVHCDataUnitPool pool] hasAvailableDataForURL:URL];
+}
+
 @end

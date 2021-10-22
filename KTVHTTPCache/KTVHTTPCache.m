@@ -84,6 +84,11 @@
     return [[KTVHCDataStorage storage] hasCacheWithURL:URL];
 }
 
++ (BOOL)hasAvailableDataForURL:(NSURL *)URL
+{
+    return [[KTVHCDataStorage storage] hasAvailableDataForURL:URL];;
+}
+
 + (NSArray<KTVHCDataCacheItem *> *)cacheAllCacheItems
 {
     return [[KTVHCDataStorage storage] allCacheItems];

@@ -147,6 +147,8 @@
     }else{
         KTVHCLogDataFileSource(@"Copy to target path success");
     }
+    
+    [self lock];
     long long length = [KTVHCPathTool sizeAtPath:path];
     KTVHCDataUnitPool *pool = [KTVHCDataUnitPool pool];
     KTVHCDataUnit *unit = [self unitWithURL:URL];
@@ -158,12 +160,15 @@
     KTVHCDataUnitItem *unitItem = [[KTVHCDataUnitItem alloc] initWithPath:filePath offset:0];
     [unit insertUnitItem:unitItem];
     [pool.unitQueue archive];
+    [self unlock];
 }
 
 - (BOOL)hasCacheWithURL:(NSURL *)URL
 {
+    [self lock];
     NSString *key = [[KTVHCURLTool tool] keyWithURL:URL];
     KTVHCDataUnit *unit = [self.unitQueue unitWithKey:key];
+    [self unlock];
     if (!unit) return NO;
     return unit.totalLength == unit.cacheLength;
     
@@ -171,6 +176,28 @@
     NSString *filePath = [KTVHCPathTool completeFilePathWithURL:URL];
     return [[NSFileManager defaultManager] fileExistsAtPath:filePath];
      */
+}
+
+- (BOOL)hasAvailableDataForURL:(NSURL *)URL
+{
+    [self lock];
+    NSString *key = [[KTVHCURLTool tool] keyWithURL:URL];
+    KTVHCDataUnit *unit = [self.unitQueue unitWithKey:key];
+    NSArray<KTVHCDataUnitItem *> *items = unit.unitItems;
+    [self unlock];
+    if (items.count == 0) return NO;
+    [items sortedArrayUsingComparator:^NSComparisonResult(KTVHCDataUnitItem * _Nonnull obj1, KTVHCDataUnitItem * _Nonnull obj2) {
+        return obj1.offset > obj2.offset;
+    }];
+    __block long long cacheLength = 0;
+    [items enumerateObjectsUsingBlock:^(KTVHCDataUnitItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx >= items.count/2 && idx > 2){
+            *stop = YES;
+        }
+        cacheLength += obj.length;
+    }];
+    if (unit.totalLength == 0) return NO;
+    return (CGFloat)cacheLength/unit.totalLength > 0.2;
 }
 
 - (void)deleteUnitWithURL:(NSURL *)URL
