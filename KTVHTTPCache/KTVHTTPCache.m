@@ -64,6 +64,11 @@
     return [KTVHCDataStorage storage].maxCacheLength;
 }
 
++ (void)cacheSetMaxCacheAge:(long long)maxCacheAge
+{
+    [KTVHCDataStorage storage].maxCacheAge = maxCacheAge;
+}
+
 + (long long)cacheTotalCacheLength
 {
     return [KTVHCDataStorage storage].totalCacheLength;
@@ -76,16 +81,19 @@
 
 + (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path
 {
+    if (![KTVHTTPCache proxyIsRunning]) return;
     [[KTVHCDataStorage storage] cacheVideoWithURL:URL videoPath:path];
 }
 
 + (BOOL)hasCacheWithURL:(NSURL *)URL
 {
+    if (![KTVHTTPCache proxyIsRunning]) return NO;
     return [[KTVHCDataStorage storage] hasCacheWithURL:URL];
 }
 
 + (BOOL)hasAvailableDataForURL:(NSURL *)URL
 {
+    if (![KTVHTTPCache proxyIsRunning]) return NO;
     return [[KTVHCDataStorage storage] hasAvailableDataForURL:URL];;
 }
 

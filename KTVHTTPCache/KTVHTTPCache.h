@@ -115,6 +115,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)cacheSetMaxCacheLength:(long long)maxCacheLength;
 
 /**
+ *  Set the maximum cache age.
+ *  Set the expiration time, every time you go back to the background, the expired data will be deleted
+ *
+ *  @param maxCacheAge : The maximum cache age.
+ */
++ (void)cacheSetMaxCacheAge:(long long)maxCacheAge;
+
+/**
  *  Get the maximum cache length.
  *
  *  @return Maximum cache length.

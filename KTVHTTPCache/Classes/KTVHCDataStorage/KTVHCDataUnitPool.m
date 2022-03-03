@@ -136,6 +136,14 @@
     return cacheItems;
 }
 
+- (NSArray<KTVHCDataUnit *> *)allCacheDataUnit
+{
+    [self lock];
+    NSArray<KTVHCDataUnit *> *units = [self.unitQueue allUnits];
+    [self unlock];
+    return units;
+}
+
 - (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path
 {
     NSString *filePath = [KTVHCPathTool completeFilePathWithURL:URL];

@@ -24,6 +24,8 @@
 - (NSArray<KTVHCDataCacheItem *> *)allCacheItem;
 - (KTVHCDataCacheItem *)cacheItemWithURL:(NSURL *)URL;
 
+- (NSArray<KTVHCDataUnit *> *)allCacheDataUnit;
+
 - (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path;
 - (BOOL)hasCacheWithURL:(NSURL *)URL;
 - (BOOL)hasAvailableDataForURL:(NSURL *)URL;

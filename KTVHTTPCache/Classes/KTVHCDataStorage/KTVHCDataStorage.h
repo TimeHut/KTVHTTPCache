@@ -70,9 +70,16 @@
 - (long long)totalCacheLength;
 
 /**
+ *  Max cache age，default a week，value  7*24*60*60
+ */
+@property (nonatomic) long long maxCacheAge;
+
+/**
  *  Delete cache.
  */
 - (void)deleteCacheWithURL:(NSURL *)URL;
 - (void)deleteAllCaches;
+
+
 
 @end

@@ -11,6 +11,10 @@
 #import "KTVHCDataUnitPool.h"
 #import "KTVHCLog.h"
 
+@interface KTVHCDataStorage()<NSLocking>
+@property (nonatomic, strong) NSRecursiveLock *coreLock;
+@end
+
 @implementation KTVHCDataStorage
 
 + (instancetype)storage
@@ -27,8 +31,24 @@
 {
     if (self = [super init]) {
         self.maxCacheLength = 500 * 1024 * 1024;
+        self.maxCacheAge = 7 * 24 * 60 * 60;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeExpiredCacheIfNeed) name:UIApplicationDidEnterBackgroundNotification object:nil];
     }
     return self;
+}
+
+- (void)removeExpiredCacheIfNeed
+{
+    NSArray<KTVHCDataUnit *> *allUnit = [[KTVHCDataUnitPool pool] allCacheDataUnit];
+    NSTimeInterval time = [[NSDate new] timeIntervalSince1970];
+    [self lock];
+    for (KTVHCDataUnit *unit in allUnit) {
+        if (unit.totalLength == unit.cacheLength && unit.createTimeInterval + self.maxCacheAge < time){
+            [[KTVHCDataUnitPool pool] deleteUnitWithURL:unit.URL];
+        }
+    }
+    [self unlock];
 }
 
 - (NSURL *)completeFileURLWithURL:(NSURL *)URL
@@ -98,5 +118,20 @@
 {
     return [[KTVHCDataUnitPool pool] hasAvailableDataForURL:URL];
 }
+
+#pragma mark - NSLocking
+- (void)lock
+{
+    if (!self.coreLock) {
+        self.coreLock = [[NSRecursiveLock alloc] init];
+    }
+    [self.coreLock lock];
+}
+
+- (void)unlock
+{
+    [self.coreLock unlock];
+}
+
 
 @end
