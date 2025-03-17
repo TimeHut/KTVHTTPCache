@@ -22,6 +22,11 @@
     return [[KTVHCHTTPServer server] start:error];
 }
 
++ (BOOL)proxyStartWithoutPublishBonjour:(NSError *__autoreleasing *)error
+{
+    return [[KTVHCHTTPServer server] startWithoutPublishBonjour:error];
+}
+
 + (void)proxyStop
 {
     [[KTVHCHTTPServer server] stop];

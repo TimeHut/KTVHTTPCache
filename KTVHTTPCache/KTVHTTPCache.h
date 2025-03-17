@@ -55,6 +55,14 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (BOOL)proxyStart:(NSError **)error;
 
 /**
+ *  Start the proxy service without publish bonjour.
+ *
+ *  @param error : Pointer to receive service error.
+ *  @return YES when the proxy service is successfully started, otherwise NO.
+ */
++ (BOOL)proxyStartWithoutPublishBonjour:(NSError **)error;
+
+/**
  *  Stop the proxy service.
  */
 + (void)proxyStop;

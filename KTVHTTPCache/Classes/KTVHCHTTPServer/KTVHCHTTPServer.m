@@ -74,6 +74,14 @@
     return [self startInternal:error];
 }
 
+- (BOOL)startWithoutPublishBonjour:(NSError **)error
+{
+    self.wantsRunning = YES;
+    [self.server setType:nil];
+    return [self startInternal:error];
+}
+
+
 - (void)stop
 {
     self.wantsRunning = NO;

@@ -18,6 +18,7 @@
 @property (nonatomic, readonly, getter=isRunning) BOOL running;
 
 - (BOOL)start:(NSError **)error;
+- (BOOL)startWithoutPublishBonjour:(NSError **)error;
 - (void)stop;
 
 - (NSURL *)URLWithOriginalURL:(NSURL *)URL;
