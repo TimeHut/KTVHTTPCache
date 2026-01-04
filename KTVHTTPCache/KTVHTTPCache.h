@@ -161,6 +161,21 @@ FOUNDATION_EXPORT const unsigned char KTVHTTPCacheVersionString[];
 + (void)cacheVideoWithURL:(NSURL *)URL videoPath:(NSString *)path;
 
 /**
+ *  Merge the cache item for the URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ *  @param dstURL :  Output video file url.
+ */
++ (BOOL)mergeCacheDataUnitItemsWithURL:(NSURL *)URL to:(NSURL *)dstURL;
+
+/**
+ *  Cache lenght for URL.
+ *
+ *  @param URL : The URL for HTTP content.
+ */
++ (NSInteger)cacheLengthWithURL:(NSURL *)URL;
+
+/**
  *  Get all cache items.
  *
  *  @return All cache items.

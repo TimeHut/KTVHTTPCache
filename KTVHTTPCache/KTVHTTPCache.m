@@ -12,6 +12,7 @@
 #import "KTVHCDownload.h"
 #import "KTVHCURLTool.h"
 #import "KTVHCLog.h"
+#import "KTVHCDataUnitPool.h"
 
 @implementation KTVHTTPCache
 
@@ -89,6 +90,51 @@
     if (![KTVHTTPCache proxyIsRunning]) return;
     [[KTVHCDataStorage storage] cacheVideoWithURL:URL videoPath:path];
 }
+
++ (BOOL)mergeCacheDataUnitItemsWithURL:(NSURL *)URL to:(NSURL *)dstURL
+{
+    if (![KTVHTTPCache proxyIsRunning]) return NO;
+    NSURL *cacheUrl = [KTVHTTPCache cacheCompleteFileURLWithURL:URL];
+    NSError *error;
+    if (cacheUrl){
+        [[NSFileManager defaultManager] removeItemAtURL:URL error:nil];
+        return [[NSFileManager defaultManager] copyItemAtURL:cacheUrl toURL:dstURL error:&error];
+    }
+    KTVHCDataUnit *unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
+    NSArray<KTVHCDataUnitItem *> *items = [unit unitItems];
+    items = [items sortedArrayUsingComparator:^NSComparisonResult(KTVHCDataUnitItem * _Nonnull obj1, KTVHCDataUnitItem * _Nonnull obj2) {
+        return [@(obj1.offset) compare:@(obj2.offset)];
+    }];
+    if (!items.count) return NO;
+    [[NSFileManager defaultManager] createFileAtPath:dstURL.path contents:nil attributes:nil];
+    NSFileHandle *writeFile = [NSFileHandle fileHandleForWritingAtPath:dstURL.path];
+    for (KTVHCDataUnitItem *item in items) {
+        NSData *data = [NSData dataWithContentsOfFile:item.absolutePath];
+        [writeFile writeData:data];
+    }
+    [writeFile closeFile];
+    return YES;
+}
+
++ (NSInteger)cacheLengthWithURL:(NSURL *)URL
+{
+    if (![KTVHTTPCache proxyIsRunning]) return NO;
+    NSURL *cacheUrl = [KTVHTTPCache cacheCompleteFileURLWithURL:URL];
+    NSError *error;
+    if (cacheUrl){
+        NSDictionary *attr = [[NSFileManager defaultManager] attributesOfItemAtPath:cacheUrl.path error:&error];
+        NSInteger size = [attr[NSFileSize] integerValue];
+        return size;
+    }
+    NSInteger totalLength = 0;
+    KTVHCDataUnit *unit = [[KTVHCDataUnitPool pool] unitWithURL:URL];
+    NSArray<KTVHCDataUnitItem *> *items = [unit unitItems];
+    for (KTVHCDataUnitItem *item in items) {
+        totalLength += item.length;
+    }
+    return totalLength;
+}
+
 
 + (BOOL)hasCacheWithURL:(NSURL *)URL
 {
